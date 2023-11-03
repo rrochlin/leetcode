@@ -42,4 +42,4 @@
 
 #VsCode
 *.dSYM
-.vscode
+.DS_Store
