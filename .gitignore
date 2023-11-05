@@ -44,3 +44,5 @@
 *.dSYM
 .DS_Store
 .vscode
+*.ilk
+*.pdb
