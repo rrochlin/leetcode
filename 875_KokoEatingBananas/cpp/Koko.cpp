@@ -7,21 +7,40 @@
 class Solution {
 public:
     int minEatingSpeed(std::vector<int>& piles, int h) {
-        std::sort(piles.begin(), piles.end());
+        int upper = std::vector<int>::max_element(piles.begin(), piles.end());
         const int size = piles.size();
-        int k;
-        if (h<size*2) k = piles[size*2-h-1];
-        else k=1;
-        while(!checkK(piles,h,(double)k)){
-            k++;
+        int k, lower;
+
+        // upper bound for certain pile/h ratios has to be above entry x in array
+        auto guess = piles.begin();
+        if (h<size*2) guess += size*2-h-1;
+
+        // find an approx upper bound. can use float since piles.length<10^4
+        while(!checkK(piles,h,*guess)){
+            guess = piles.begin() + std::ceil((guess-piles.begin() + size)/(float)2);
         }
+
+        // if at start of array check with 1, else check with last index
+        if (guess != piles.begin()) lower = *(guess-1);
+        else lower = 1;
+        int upper = *guess;
+        
+        // if we get back to *upper, upper bound = lower bound
+        while(lower<upper){
+            k = (upper+lower)/2;
+            if(!checkK(piles,h,k)) lower = k;
+            else upper = k;
+        }
+
         return k;
     }
 
-    bool checkK(std::vector<int>& piles, int h, double k){
+    bool checkK(std::vector<int>& piles, int h, int k){
         for(auto it=piles.rbegin(); it!= piles.rend(); it++){
-            h-=*it/k;
-            if (h<0) return false;
+            h-=std::ceil(*it/(double)k);
+            if (h<0) {
+                return false;
+            }
         }
         return true;
     }
