@@ -7,40 +7,24 @@
 class Solution {
 public:
     int minEatingSpeed(std::vector<int>& piles, int h) {
-        int upper = std::vector<int>::max_element(piles.begin(), piles.end());
+        int upper = *std::max_element(piles.begin(), piles.end());
         const int size = piles.size();
-        int k, lower;
+        int k, lower=1;
 
-        // upper bound for certain pile/h ratios has to be above entry x in array
-        auto guess = piles.begin();
-        if (h<size*2) guess += size*2-h-1;
-
-        // find an approx upper bound. can use float since piles.length<10^4
-        while(!checkK(piles,h,*guess)){
-            guess = piles.begin() + std::ceil((guess-piles.begin() + size)/(float)2);
-        }
-
-        // if at start of array check with 1, else check with last index
-        if (guess != piles.begin()) lower = *(guess-1);
-        else lower = 1;
-        int upper = *guess;
-        
         // if we get back to *upper, upper bound = lower bound
-        while(lower<upper){
+        while(lower+1<upper){
             k = (upper+lower)/2;
-            if(!checkK(piles,h,k)) lower = k;
+            if(!check(piles,h,k)) lower = k;
             else upper = k;
         }
-
-        return k;
+        if(check(piles,h,lower)) return lower;
+        return upper;
     }
 
-    bool checkK(std::vector<int>& piles, int h, int k){
+    bool check(std::vector<int>& piles, int h, int k){
         for(auto it=piles.rbegin(); it!= piles.rend(); it++){
             h-=std::ceil(*it/(double)k);
-            if (h<0) {
-                return false;
-            }
+            if (h<0) return false;
         }
         return true;
     }
@@ -48,8 +32,10 @@ public:
 
 int main(){
     Solution sol;
-    std::vector<int> single({1000000000});
-    std::cout<<sol.minEatingSpeed(single, 2)<<'\n';
+    std::vector<int> single({312884470});
+    std::cout<<sol.minEatingSpeed(single, 968709470)<<'\n';
+    std::vector<int> single2({100000000});
+    std::cout<<sol.minEatingSpeed(single2, 2)<<'\n';
     std::vector<int> piles({3,6,7,11});
     std::cout<<sol.minEatingSpeed(piles, 8)<<'\n';
     std::vector<int> piles2({30,11,23,4,20});
