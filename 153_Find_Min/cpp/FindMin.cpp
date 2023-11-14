@@ -6,13 +6,20 @@
 
 class Solution {
 public:
-    int findMin(std::vector<int>& nums) {
-      return *std::min_element(nums.begin(), nums.end());
+  int findMin(std::vector<int>& nums) {
+    if (*nums.begin() <= *nums.rbegin()) return *nums.begin();
+    int l = 0,r=nums.size(),k;
+    while(l+1<r){
+      k = (l+r)/2;
+      if (nums[k] > *nums.begin()) l = k;
+      else r = k;
     }
+    return std::min(nums[l],nums[r]);
+  }
 };
 
 int main(){
     Solution sol;
-    std::vector<int> piles({3,6,7,11});
-    std::cout<<sol.findMin(piles)<<'\n';
-}
+    std::vector<int> vec({3,4,5,1,2});
+    std::cout<<sol.findMin(vec)<<'\n';
+} 

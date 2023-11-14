@@ -28,7 +28,37 @@ public:
         }
         return true;
     }
+
+    int minEatingSpeed2(std::vector<int>& bananaPiles, int timeInHours) 
+    {
+        int left = 1;
+        int right = 1e9;
+
+        while (left <= right) 
+        {
+            int mid = left + (right - left) / 2;
+            if (canEatInTime(bananaPiles, mid, timeInHours)) right = mid - 1;
+            else left = mid + 1;
+        }
+
+        return left;
+    }
+
+    bool canEatInTime(std::vector<int>& bananaPiles, int bananasPerHour, int timeInHours) 
+    {
+        int64_t hours = 0;
+        
+        for (int pile : bananaPiles) 
+        {
+            int div = pile / bananasPerHour;
+            hours += div;
+            if (pile % bananasPerHour != 0) hours++;
+        }
+
+        return hours <= timeInHours;
+    }
 };
+
 
 int main(){
     Solution sol;
