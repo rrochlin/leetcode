@@ -1,4 +1,5 @@
 #include <vector>
+#include <cmath>
 class Solution {
 public:
     int search2(std::vector<int>& nums, int target) {
