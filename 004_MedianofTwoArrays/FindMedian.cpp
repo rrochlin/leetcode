@@ -6,24 +6,51 @@
 
 class Solution {
 public:
-    double findMedianSortedArrays(std::vector<int>& l, std::vector<int>& m) {
+    double findMedianSortedArrays(std::vector<int>& vecl, std::vector<int>& vecm) {
       // handle edge cases
-      if(l.empty()){
-        if (m.size()%2==1) return m[m.size()/2];
-        return (m[m.size()/2-1] + m[m.size()/2])/2.0 ;
+      if(vecl.empty()){
+        if (vecm.size()%2==1) return vecm[vecm.size()/2];
+        return (vecm[vecm.size()/2-1] + vecm[vecm.size()/2])/2.0 ;
       }
-      if(m.empty()){
-        if (l.size()%2==1) return l[l.size()/2];
-        return (l[l.size()/2-1] + l[l.size()/2])/2.0 ;
+      if(vecm.empty()){
+        if (vecl.size()%2==1) return vecl[vecl.size()/2];
+        return (vecl[vecl.size()/2-1] + vecl[vecl.size()/2])/2.0 ;
       }
-      int ll=0,ml=0,lr=l.size()-1,mr=m.size()-1,mk,lk;
-      while (ll<=lr || ml<=mr){
-        lk = (ll+lr)/2;
-        mk = (ml+mr)/2;
-        if (l[lk] < m[mk]) {ll=lk+1; mr=mk-1;}
-        else {lr=lk-1; ml=mk+1;}
+      int l=0,r=vecl.size()-1,k,i;
+      int goal = (vecl.size()+vecm.size())/2;
+      bool odd = (vecl.size()+vecm.size())%2==1;
+      while(l<=r){
+        k = (l+r)/2;
+        i = findNextSmallest(vecm, vecl[k]);
+        if (i + k + 2 > goal) r=k-1;
+        else if (i + k + 2 == goal) break;
+        else l=k+1;
+      }
+      if (i+k+2==goal){
+        if(odd) return vecl[k]>vecm[i] ? vecl[k] : vecm[i];
+        if (vecl[k] > vecm[i]){
+          if (k == vecl.size()-1) return (vecm[i+1]+vecl[k])/2.0;
+          if (i == vecm.size()-1) return (vecl[k] + vecl[k+1])/2.0;
+          if (vecl[k] < vecm[i+1]) return (vecm[i+1] + vecl[k])/2.0;
+          return (vecl[k] + vecl[k+1]);
+        }
+        else {
+
+        }
+
       }
       return 0;
+    }
+    int findNextSmallest(std::vector<int>& m, int t){
+      int l=0,r=m.size();
+      // expecting no equality
+      int k;
+      while (l<r){
+        k = (l+r)/2;
+        if (m[k] < t) l=k+1;
+        else r=k;
+      }
+      return std::min(l,(int)m.size()-1);
     }
 };
 
@@ -32,6 +59,7 @@ int main(){
     // std::vector<int> vec({});
     // std::vector<int> vec2({2,3});
     // std::cout<<sol.findMedianSortedArrays(vec, vec2)<<'\n';
+    // std::vector<int> vectest({1,2,5,6,7,8,20,30,40,50});
     std::vector<int> vec21({1,2});
     std::vector<int> vec22({3,4});
     std::cout<<sol.findMedianSortedArrays(vec21, vec22)<<'\n';
