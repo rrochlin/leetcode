@@ -1,25 +1,25 @@
 #include <vector>
 #include <iostream>
+#include <deque>
 
 class Solution {
 public:
     std::vector<int> maxSlidingWindow(std::vector<int>& nums, int k) {
-        int max=INT_MIN, l=0, r=k;
+        int l=0, r=k;
         std::vector<int> msw;
-        for (int i=0;i<k;i++){
-            max=std::max(max,nums[i]);
+        std::deque<int> dq;
+        dq.push_back(nums[0]);
+        for (int i=1;i<k;i++){
+            while (!dq.empty() && nums[i] > dq.back()) dq.pop_back();
+            dq.push_back(nums[i]);
         }
-        msw.push_back(max);
+        msw.push_back(dq.front());
         while (r<nums.size()){
-            if(nums[l]==max){
-                max=INT_MIN;
-                for (int i=l;i<l+k;i++){
-                    max=std::max(max,nums[i+1]);
-                }
-            }
-            max=std::max(max, nums[r]);
+            if(nums[l]==dq.front()) dq.pop_front();
+            while (!dq.empty() && nums[r] > dq.back()) dq.pop_back();
+            dq.push_back(nums[r]);
             l++, r++;
-            msw.push_back(max);
+            msw.push_back(dq.front());
         }
         return msw;
     }
@@ -28,8 +28,8 @@ public:
 
 int main(){
     Solution sol;
-    std::vector<int> nums = {1,-1};
-    int k = 1;
+    std::vector<int> nums = {1,3,1,2,0,5};
+    int k = 3;
     for(int i:sol.maxSlidingWindow(nums, k)) std::cout<<i;
     std::cout<<std::endl;
 }; 
