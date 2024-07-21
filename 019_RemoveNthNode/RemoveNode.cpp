@@ -26,65 +26,66 @@ ListNode* make_linked_list(T (&head)[N]){
 
 class Solution {
 public:
-    void reorderList(ListNode* head) {
-        ListNode* copy = head;
-        std::vector<ListNode*> tail;
-        int len = 0;
-        while (copy!=nullptr){
-            tail.push_back(copy);
-            copy = copy->next;
-            len++;
-        }
-        len/=2;
-        ListNode* next;
-        auto it = tail.rbegin();
-        while (len>0){
-            next = head->next;
-            head->next = *it;
-            head->next->next = next;
-            head = next;
-            it++;
-            len--;
-        }
-        head->next = nullptr;
-
-    }
-    void reorderListFast(ListNode* head) {
-        //ios_base::sync_with_stdio(false);
-        //cin.tie(nullptr);
-        ListNode* slow = head;
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* before = head;
         ListNode* fast = head->next;
+        int sz = 1;
+        while(fast && fast->next) {
+            fast = fast->next->next;
+            sz+=2;
+        }
+        if (fast != nullptr) sz++;
+        if (sz==n) {
+            head = head->next;
+            return head;
+        }
+        for(int i=0; i < sz - n - 1; i++) before = before->next;
+        if (before->next == nullptr) return head;
+        before->next = before->next->next;
+        return head;
+    }
+
+    ListNode* removeNthFromEndFast(ListNode* head, int n) {
+
+        if(!head || !head->next){
+            return nullptr;
+        }
+
+        int l = 0;
+        ListNode *length = head;
+        while(length){
+            l++;
+            length = length->next;
+        }
+
+        if(l == n) return head->next;
+
+        ListNode *slow = head;
+        ListNode *fast = head;
+
+        //int index = 0;
+        for(int i = 0; i < n; i++){
+            fast = fast->next;
+        }
+
         while(fast && fast->next){
             slow = slow->next;
-            fast = fast->next->next;
+            fast = fast->next;
         }
-        ListNode* second = slow->next;
-        ListNode* prev = slow->next = nullptr;
-        while(second!=nullptr){
-            ListNode* temp = second->next;
-            second->next = prev;
-            prev = second;
-            second = temp;
-        }
-        ListNode* first = head;
-        second = prev;
-        while(second!=nullptr){
-            ListNode* temp1 = first->next;
-            ListNode* temp2 = second->next;
-            first->next = second;
-            second->next = temp1;
-            first = temp1;
-            second = temp2;
-        }
+
+        slow->next = slow->next->next;
+
+        return head;
     }
 };
 
 
 int main(){
     Solution sol;
-    int nodes[4] = {1,2,3, 4};
-    ListNode* head = make_linked_list(nodes);
-    sol.reorderList(head);
+    int nodes[5] = {1,2,3, 4, 5};
+    int nodes2[2] = {1,2};
+    ListNode* head = make_linked_list(nodes2);
+    head = sol.removeNthFromEnd(head,2);
     while(head != nullptr) {
         std::cout<<head->val<<" ";
         head = head->next;
