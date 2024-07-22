@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <unordered_map>
+#include <map>
 class Node {
 public:
     int val;
@@ -19,6 +20,34 @@ public:
 
 class Solution {
 public:
+    Node* copyRandomList(Node* head) {
+        if (head == nullptr) return head;
+        Node* new_head = new Node(head->val);
+        Node* start = new_head;
+        std::vector<Node*> randoms;
+        std::unordered_map<Node*, int> order;
+        int i = 0;
+        std::vector<Node*> new_nodes;
+        new_nodes.push_back(new_head);
+        while(true) {
+            randoms.push_back(head->random);
+            order[head] = i++;
+            head = head->next;
+            if (head==nullptr) break;
+            new_head->next = new Node(head->val);
+            new_head = new_head -> next;
+            new_nodes.push_back(new_head);
+        }
+        order[nullptr] = i;
+        new_nodes.push_back(nullptr);
+        new_head = start;
+        for (Node* n : randoms) {
+            new_head->random = new_nodes[order.at(n)];
+            new_head = new_head->next;
+        }
+        return start;
+    }
+
     Node* copyRandomList(Node* head) {
         if (head == nullptr) return head;
         Node* new_head = new Node(head->val);
@@ -101,7 +130,7 @@ public:
     Node* copyRandomListFast(Node* head) {
         // return head;
         Node* temp=head;
-        map<Node*, Node*> mpp;
+        std::unordered_map<Node*, Node*> mpp;
         while(temp!=NULL){
             Node* newnode=new Node(temp->val);
             mpp[temp]=newnode;
