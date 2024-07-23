@@ -35,12 +35,5 @@ public:
     }
 };
 int main(){
-    Solution sol;
-    int nodes[4] = {1,2,3, 4};
-    ListNode* head = make_linked_list(nodes);
-    sol.reorderList(head);
-    while(head != nullptr) {
-        std::cout<<head->val<<" ";
-        head = head->next;
-    }
+
 };
