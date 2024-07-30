@@ -2,19 +2,29 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <unordered_map>
 class LRUCache {
 public:
     LRUCache(int capacity) {
-
+        m_capacity = capacity;
     }
 
     int get(int key) {
-
+        auto el = m_cache.find(key);
+        if (el == m_cache.end()) return -1;
+        return el->second;
     }
 
     void put(int key, int value) {
+        if (m_capacity>0) {
+            m_capacity--;
+            m_cache[key] = value;
+        }
 
     }
+private:
+    int m_capacity;
+    std::unordered_map<int, int> m_cache;
 };
 
 /**
@@ -35,15 +45,16 @@ int main(){
     for (std::string i : ins){
         if(i=="LRUCache"){
             obj = new LRUCache(nums[j][0]);
+            std::cout<<"null ";
         }
         else if (i == "get"){
             param_1 = obj->get(nums[j][0]);
+            std::cout<<param_1;
         }
         else if (i == "put"){
             obj->put(nums[j][0], nums[j][1]);
+            std::cout<<"null ";
         }
     }
-
-
-
+    delete obj;
 };
