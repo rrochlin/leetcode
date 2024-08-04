@@ -12,6 +12,8 @@
 
 *.dSYM/
 
+venv/*
+
 # Compiled Object files
 *.slo
 *.lo
