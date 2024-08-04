@@ -12,7 +12,7 @@ class Solution {
 public:
     bool isSubtree(TreeNode* root, TreeNode* subRoot) {
         if(root==nullptr || subRoot==nullptr) return root==subRoot;
-        if(root->val==subRoot->val && isSameTree(root, subRoot)) return true;
+        if(isSameTree(root, subRoot)) return true;
         return isSubtree(root->right, subRoot) || isSubtree(root->left, subRoot);
     }
 };
