@@ -9,6 +9,4 @@ add_executable(
         Leetcode
         HelperFuncts/PrintBT.cpp
         Trees/Trees.cpp
-        Trees/Trees.h
-        Trees/_543_DiameterofBinaryTree.h
 )
