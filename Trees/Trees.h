@@ -20,7 +20,7 @@ TreeNode* makeTree(std::vector<int> array){
     std::deque<TreeNode*> stack;
     for (int i=1; i<array.size();i++){
         TreeNode* next;
-        if (array[i] == -1) next = nullptr;
+        if (array[i] == INT_MIN) next = nullptr;
         else {
             next = new TreeNode(array[i]);
             stack.push_back(next);
