@@ -1,5 +1,7 @@
 //
 // Created by Robert Rochlin on 8/4/24.
+// returns the values of the binary tree level by level
+// left to right
 //
 
 #ifndef LEETCODE_102_BINARYTREELEVELORDERTRAVERSAL_H
