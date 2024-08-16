@@ -1,16 +1,12 @@
 #include "Trees.h"
-#include "_110_BalancedBinaryTree.h"
+#include "297_SerializeandDeserializeBinaryTree.h"
 
 int main() {
-    auto sol = new Solution();
-//    int nums[] = {4,2,7,1,3,6,9};
-    int nums[] = {1,2,2,3,3,-1,-1,4,4};
-    int n = sizeof(nums) / sizeof(nums[0]);
-    auto vec = std::vector<int> (nums, nums+n);
-    auto tree = makeTree(vec);
+//    auto sol = new Solution();
+    auto codec = new Codec();
+    auto tree = makeTree(std::vector<int>{4,-7,-3,INT_MIN,INT_MIN,-9,-3,9,-7,-4,INT_MIN,6,INT_MIN,-6,-6,INT_MIN,INT_MIN,0,6,5,INT_MIN,9,INT_MIN,INT_MIN,-1,-4,INT_MIN,INT_MIN,INT_MIN,-2});
     printBT(tree);
-    if(sol->isBalanced(tree)) std::cout<<"true";
-    else std::cout<<"false";
-
-
+//    auto vec1 = std::vector<int>{1,2,3};
+    std::cout<<codec->serialize(tree)<<"\n";
+    printBT(codec->deserialize(codec->serialize(tree)));
 }
