@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(
         Leetcode
         HelperFuncts/PrintBT.cpp
-        Tries/Tries.cpp
+        BackTracking/main.cpp
 )
