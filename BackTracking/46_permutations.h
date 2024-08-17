@@ -4,7 +4,8 @@
 
 #ifndef LEETCODE_46_PERMUTATIONS_H
 #define LEETCODE_46_PERMUTATIONS_H
-#include <bits/stdc++.h>
+#include <vector>
+#include <deque>
 using namespace std;
 
 void helper(vector<vector<int>>& res, vector<int>& curr, vector<int>& nums, deque<int>& indices){

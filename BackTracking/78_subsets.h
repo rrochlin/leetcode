@@ -4,7 +4,7 @@
 
 #ifndef LEETCODE_78_SUBSETS_H
 #define LEETCODE_78_SUBSETS_H
-#include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 
 void dfs(vector<int>& nums, int start, vector<int>& curr, vector<vector<int>>& result){

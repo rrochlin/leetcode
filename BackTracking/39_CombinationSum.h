@@ -4,7 +4,7 @@
 
 #ifndef LEETCODE_39_COMBINATIONSUM_H
 #define LEETCODE_39_COMBINATIONSUM_H
-#include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 
 void dfs(vector<vector<int>>& res, int start, vector<int>& curr, vector<int>& nums, int& target, int sum){
