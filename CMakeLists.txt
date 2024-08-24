@@ -8,5 +8,5 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(
         Leetcode
         HelperFuncts/PrintBT.cpp
-        Graphs/main.cpp
+        DynamicProgramming/main.cpp
 )
