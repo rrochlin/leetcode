@@ -12,21 +12,20 @@ using namespace std;
 
 int helper(vector<int>& prices, int idx, bool can_buy, int stock, int n, vector<vector<int>>& dp){
     if(idx>=n) return 0;
-    if(!can_buy && stock==1001) helper(prices, idx + 1, true, 1001, n, dp);
-    if(dp[idx][stock]!=INT_MIN) return dp[idx][stock];
-    if(stock==1001) {
+    if(dp[idx][can_buy]!=INT_MIN) return dp[idx][can_buy];
+    if(can_buy) {
         auto res = max(
-                helper(prices, idx + 1, false, prices[idx], n, dp),
-                helper(prices, idx + 1, true, 1001, n, dp)
+                helper(prices, idx + 1, false, prices[idx], n, dp) - prices[idx], // buy
+                helper(prices, idx + 1, true, INT_MIN, n, dp) // hold
         );
-        dp[idx][stock] = res;
+        dp[idx][can_buy] = res;
         return res;
     }
     auto res =  max(
-            prices[idx]-stock + helper(prices, idx+1, false, 1001, n, dp),
-            helper(prices, idx+1, false, stock, n, dp)
+            prices[idx] + helper(prices, idx+2, true, INT_MIN, n, dp), // sell -> cd
+            helper(prices, idx+1, false, stock, n, dp) // hold
             );
-    dp[idx][stock] = res;
+    dp[idx][can_buy] = res;
     return res;
 }
 
@@ -34,11 +33,11 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        vector<vector<int>> dp(n, vector<int>(1002, INT_MIN));
-        return helper(prices, 0, true, 1001, n, dp);
+        vector<vector<int>> dp(n, vector<int>(2, INT_MIN));
+        return helper(prices, 0, true, INT_MIN, n, dp);
     }
 
-    int maxProfitFast(vector<int>& prices) {
+    int maxProfitMinSpace(vector<int>& prices) {
         int sold = 0;
         int hold = INT_MIN;
         int rest = 0;
