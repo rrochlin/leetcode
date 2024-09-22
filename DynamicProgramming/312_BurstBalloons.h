@@ -6,24 +6,17 @@
 #define LEETCODE_312_BURSTBALLOONS_H
 
 #include <vector>
-#include <unordered_map>
 
 using namespace std;
 
-int helper(vector<int>& nums, int sum, int n, vector<unordered_map<int, int>>& dp){
-    if (n==2) return sum + nums[0] * nums[1] + max(nums[0], nums[1]);
-    if (dp[n].find(sum)!=dp[n].end()) return dp[n][sum];
+int helper(vector<int>& nums, int L, int R, vector<vector<int>>& dp){
+    if (L>R) return 0;
     int res = 0;
-    for (int i=0; i<n; i++){
-        int num = nums[i];
-        int val = num;
-        if (i>0) val*=nums[i-1];
-        if (i<n-1) val*=nums[i+1];
-        nums.erase(nums.begin()+i);
-        res = max(helper(nums, sum+val, n-1, dp), res);
-        nums.insert(nums.begin()+i, num);
+    for (int i=L; i<=R; i++){
+        if(dp[i+1][R] == -1) dp[i+1][R] = helper(nums, i+1, R, dp);
+        if(dp[L][i-1] == -1) dp[L][i-1] = helper(nums, L, i-1, dp);
+        res = max(res, dp[L][i-1] + dp[i+1][R] + nums[i]*nums[L-1]*nums[R+1]);
     }
-    dp[n][sum] = res;
     return res;
 }
 class Solution {
@@ -31,8 +24,10 @@ public:
     int maxCoins(vector<int>& nums) {
         int n = nums.size();
         if (n==1) return nums[0];
-        vector<unordered_map<int, int>> dp(n+1, unordered_map<int, int>());
-        return helper(nums, 0, n, dp);
+        vector<vector<int>> dp(n+2, vector<int>(n+2, -1));
+        nums.insert(nums.begin(), 1);
+        nums.insert(nums.end(), 1);
+        return helper(nums, 1, n, dp);
     }
 };
 
